@@ -1,6 +1,51 @@
 <?php
 
 require_once 'mainsector.civix.php';
+/**
+ * Implements hook_civicrm_apiWrappers()
+ *
+ * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_apiWrappers
+ */
+function mainsector_civicrm_apiWrappers(&$wrappers, $apiRequest) {
+  if ($apiRequest['entity'] == 'ContactSegment' && $apiRequest['action'] == 'get') {
+    $wrappers[] = new CRM_Mainsector_ContactSegmentApiWrapper();
+  }
+}
+/**
+ * Implements hook_civicrm_alterTemplateFile().
+ *
+ * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_alterTemplateFile
+ */
+function mainsector_civicrm_alterTemplateFile($formName, &$form, $context, &$tplName) {
+  CRM_Mainsector_MainSector::alterTemplateFile($formName, $form, $context, $tplName);
+}
+
+/**
+ * Implements hook_civicrm_buildForm().
+ *
+ * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_buidForm
+ */
+function mainsector_civicrm_buildForm($formName, &$form) {
+  CRM_Mainsector_MainSector::buildForm($formName, $form);
+}
+
+/**
+ * Implements hook_civicrm_postProcess().
+ *
+ * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_postProcess
+ */
+function mainsector_civicrm_postProcess($formName, &$form) {
+  CRM_Mainsector_MainSector::postProcess($formName, $form);
+}
+
+/**
+ * Implements hook_civicrm_validateForm().
+ *
+ * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_validateForm
+ */
+function mainsector_civicrm_validateForm($formName, &$fields, &$files, &$form, &$errors) {
+  CRM_Mainsector_MainSector::validateForm($form, $fields, $files, $form, $errors);
+}
 
 /**
  * Implements hook_civicrm_config().
@@ -10,6 +55,7 @@ require_once 'mainsector.civix.php';
 function mainsector_civicrm_config(&$config) {
   _mainsector_civix_civicrm_config($config);
 }
+
 
 /**
  * Implements hook_civicrm_xmlMenu().
@@ -28,6 +74,8 @@ function mainsector_civicrm_xmlMenu(&$files) {
  * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_install
  */
 function mainsector_civicrm_install() {
+  // todo: check if contact segment extension is installed
+
   _mainsector_civix_civicrm_install();
 }
 
