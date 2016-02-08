@@ -7,7 +7,7 @@ require_once 'mainsector.civix.php';
  * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_apiWrappers
  */
 function mainsector_civicrm_apiWrappers(&$wrappers, $apiRequest) {
-  if ($apiRequest['entity'] == 'ContactSegment' && $apiRequest['action'] == 'get') {
+  if ($apiRequest['entity'] == 'ContactSegment') {
     $wrappers[] = new CRM_Mainsector_ContactSegmentApiWrapper();
   }
 }
