@@ -60,6 +60,10 @@ class CRM_Mainsector_ContactSegmentApiWrapper implements API_Wrapper {
         2 => array($contactSegmentId, 'Integer'));
       CRM_Core_DAO::executeQuery($query, $params);
       $result['values'] = civicrm_api3('ContactSegment', 'Getsingle', array('id' => $contactSegmentId));
+
+      if (function_exists('pum_portal_custom_civicrm_update_sector_community')) {
+        pum_portal_custom_civicrm_update_sector_community($contactSegmentId, $apiParams['is_main']);
+      }
     }
   }
 
