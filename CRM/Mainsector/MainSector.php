@@ -66,15 +66,28 @@ class CRM_Mainsector_MainSector {
           if (!isset($submitValues['is_main'])) {
             $submitValues['is_main'] = 0;
           }
-          $query = 'UPDATE civicrm_contact_segment SET is_main = %4
-            WHERE contact_id = %1 AND role_value = %2 AND segment_id = %3';
-          $params = array(
-            1 => array($submitValues['contact_id'], 'Integer'),
-            2 => array('Expert', 'String'),
-            3 => array($submitValues['segment_parent'], 'Integer'),
-            4 => array($submitValues['is_main'], 'Integer')
+          $apiParams = array(
+            'contact_id' => $submitValues['contact_id'],
+            'role_value' => 'Expert',
+            'segment_id' => $submitValues['segment_parent'],
+            'is_main' => $submitValues['is_main']
           );
-          CRM_Core_DAO::executeQuery($query, $params);
+          // if action is add, then retrieve the contact segment just created
+          $action = $form->getVar('_action');
+          if ($action == CRM_Core_Action::ADD) {
+            $existing = civicrm_api3('ContactSegment', 'Get', array(
+              'contact_id' => $submitValues['contact_id'],
+              'segment_id' => $submitValues['segment_parent'],
+              'role_value' => 'Expert'
+            ));
+            foreach ($existing['values'] as $existingContactSegment) {
+              $apiParams['id'] = $existingContactSegment['id'];
+            }
+          }
+          if (isset($submitValues['contact_segment_id']) && !empty($submitValues['contact_segment_id'])) {
+            $apiParams['id'] = $submitValues['contact_segment_id'];
+          }
+          civicrm_api3('ContactSegment', 'create', $apiParams);
         }
       }
     }
