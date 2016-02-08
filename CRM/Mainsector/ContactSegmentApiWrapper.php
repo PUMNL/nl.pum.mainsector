@@ -47,7 +47,9 @@ class CRM_Mainsector_ContactSegmentApiWrapper implements API_Wrapper {
    */
   private function createIsMain($apiParams, &$result) {
     if (isset($apiParams['is_main'])) {
-      if (!isset($apiParams['id'])) {
+      if (!isset($apiParams['id']) && isset($result['id'])) {
+        $contactSegmentId = $result['id'];
+      } elseif (!isset($apiParams['id'])) {
         $contactSegmentId = $result['values'][0];
       } else {
         $contactSegmentId = $apiParams['id'];
