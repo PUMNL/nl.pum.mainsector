@@ -70,12 +70,15 @@ function mainsector_civicrm_xmlMenu(&$files) {
 
 /**
  * Implements hook_civicrm_install().
+ * check if extension org.civicoop.contactsegment is installed
  *
  * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_install
  */
 function mainsector_civicrm_install() {
-  // todo: check if contact segment extension is installed
-
+  if (_mainsector_checkContactSegmentInstalled() == FALSE) {
+    throw new Exception(ts('Could not install extension nl.pum.mainsector,
+      required extension org.civicoop.contactsegment not installed or disabled'));
+  }
   _mainsector_civix_civicrm_install();
 }
 
@@ -94,6 +97,10 @@ function mainsector_civicrm_uninstall() {
  * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_enable
  */
 function mainsector_civicrm_enable() {
+  if (_mainsector_checkContactSegmentInstalled() == FALSE) {
+    throw new Exception(ts('Could not enable extension nl.pum.mainsector,
+      required extension org.civicoop.contactsegment not installed or disabled'));
+  }
   _mainsector_civix_civicrm_enable();
 }
 
@@ -171,16 +178,20 @@ function mainsector_civicrm_alterSettingsFolders(&$metaDataFolders = NULL) {
 }
 
 /**
- * Functions below this ship commented out. Uncomment as required.
- *
-
-/**
- * Implements hook_civicrm_preProcess().
- *
- * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_preProcess
- *
-function mainsector_civicrm_preProcess($formName, &$form) {
-
+ * Function to check if extension org.civicoop.contactsegment is installed
+ */
+function _mainsector_checkContactSegmentInstalled() {
+  $foundExtension = FALSE;
+  try {
+    $installedExtensions = civicrm_api3('Extension', 'Get', array());
+    foreach ($installedExtensions['values'] as $extension) {
+      if ($extension['key'] = 'org.civicoop.contactsegment' && $extension['status'] == 'installed') {
+        $foundExtension = TRUE;
+      }
+    }
+  } catch (CiviCRM_API3_Exception $ex) {
+    throw new Exception(ts('Could not get any extensions in mainsector.php function _checkContactSegmentInstalled,
+      error from API Extension Get: '.$ex->getMessage()));
+  }
+  return $foundExtension;
 }
-
-*/
