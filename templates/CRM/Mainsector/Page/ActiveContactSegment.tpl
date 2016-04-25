@@ -24,7 +24,7 @@
           {* todo : add apiWrapper that adds is_main and hide or show isMain *}
           {crmAPI var='result' entity='ContactSegment' action='getsingle' id=$activeContactSegmentId}
           {if $result.is_main eq 1}
-            <td><img id="isMain" src="/pum_acc/sites/all/modules/civicrm/i/check.gif" alt="Default"></td>
+            <td><img id="isMain" src="{$config->resourceBase}i/check.gif" alt="Main Sector"></td>
           {else}
             <td>&nbsp;</td>
           {/if}
