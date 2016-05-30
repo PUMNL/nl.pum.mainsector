@@ -70,8 +70,14 @@ class CRM_Mainsector_MainSector {
             'contact_id' => $submitValues['contact_id'],
             'role_value' => 'Expert',
             'segment_id' => $submitValues['segment_parent'],
-            'is_main' => $submitValues['is_main']
+            'is_main' => $submitValues['is_main'],
           );
+          if ($submitValues['start_date']) {
+            $apiParams['start_date'] = $submitValues['start_date'];
+          }
+          if ($submitValues['end_date']) {
+            $apiParams['end_date'] = $submitValues['end_date'];
+          }
           // if action is add, then retrieve the contact segment just created
           $action = $form->getVar('_action');
           if ($action == CRM_Core_Action::ADD) {
