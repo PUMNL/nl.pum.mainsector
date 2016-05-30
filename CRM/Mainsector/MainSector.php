@@ -42,14 +42,11 @@ class CRM_Mainsector_MainSector {
       $tplName = 'CRM/Mainsector/Page/ContactSegment.tpl';
     }
     // only show is main on form for Expert role and Sector OR add mode
-    // todo : jQuery to remove is_main if any other role than Expert is selected or if area of expertise is selected
     if ($formName == "CRM_Contactsegment_Form_ContactSegment") {
-      if (!isset($form->_defaultValues['segment_child'])) {
         $action = $form->getVar('_action');
-        if ($form->_defaultValues['contact_segment_role'] == "Expert" || $action == CRM_Core_Action::ADD) {
+        if ($action == CRM_Core_Action::ADD || $action == CRM_Core_Action::UPDATE) {
           $tplName = 'CRM/Mainsector/Form/ContactSegment.tpl';
         }
-      }
     }
   }
 

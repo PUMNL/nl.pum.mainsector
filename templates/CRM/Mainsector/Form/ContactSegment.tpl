@@ -39,7 +39,7 @@
     <div class="clear"></div>
   </div>
 
-  <div class="crm-section">
+  <div class="crm-section is-main-section">
     <div class="label">{$form.is_main.label}</div>
     <div class="content">{$form.is_main.html}</div>
     <div class="clear"></div>
@@ -56,7 +56,30 @@
     cj("#segment_parent").change(function() {
       var parentId = cj("#segment_parent").val();
       getSegmentChildren(parentId);
+      showHideIsMain();
     });
+
+    cj('#contact_segment_role').change(function() {
+      showHideIsMain();
+    });
+
+    cj('#segment_child').change(function() {
+      showHideIsMain();
+    });
+
+    function showHideIsMain() {
+      var childId = cj('#segment_child').val();
+      var parentId = cj("#segment_parent").val();
+      var role = cj("#contact_segment_role").val();
+
+      if (parentId && parentId > 0 && role == 'Expert' && childId == 0) {
+        cj('.is-main-section').show();
+      } else {
+        cj('.is-main-section').hide();
+      }
+    }
+
+    showHideIsMain();
   </script>
 {/literal}
 
