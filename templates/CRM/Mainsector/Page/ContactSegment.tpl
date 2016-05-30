@@ -18,7 +18,7 @@
     {/if}
     {if !empty($pastContactSegments)}
       <h4 class="label font-red">{ts}Past{/ts} {$parentSegmentLabel}s {ts}and/or{/ts} {$childSegmentLabel}s</h4>
-      {include file="CRM/Contactsegment/Page/PastContactSegment.tpl"}
+      {include file="CRM/Mainsector/Page/PastContactSegment.tpl"}
       {if !empty($floatingContactSegments)}
         <h5 class="label font-red">{ts}Past{/ts} {$childSegmentLabel}s {ts} with still active{/ts} {$parentSegmentLabel}s</h5>
         {include file="CRM/Contactsegment/Page/FloatingContactSegment.tpl"}
