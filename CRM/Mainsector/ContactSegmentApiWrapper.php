@@ -47,6 +47,7 @@ class CRM_Mainsector_ContactSegmentApiWrapper implements API_Wrapper {
    */
   private function createIsMain($apiParams, &$result) {
     if (isset($apiParams['is_main'])) {
+      $isMain = $apiParams['is_main'];
       if (!isset($apiParams['id']) && isset($result['id'])) {
         $contactSegmentId = $result['id'];
       } elseif (!isset($apiParams['id'])) {
@@ -54,9 +55,16 @@ class CRM_Mainsector_ContactSegmentApiWrapper implements API_Wrapper {
       } else {
         $contactSegmentId = $apiParams['id'];
       }
+
+      $segmentId = CRM_Core_DAO::singleValueQuery("SELECT segment_id FROM `civicrm_contact_segment` WHERE id = %1 ", array(1=>array($contactSegmentId, 'Integer')));
+      $segment = civicrm_api3('Segment', 'getsingle', array('id' => $segmentId));
+      if (!empty($segment['parent_id'])) {
+        $isMain = 0; // Reset is main when segment is an area of expertise.
+      }
+
       $query = 'UPDATE civicrm_contact_segment SET is_main = %1 WHERE id = %2';
       $params = array(
-        1 => array($apiParams['is_main'], 'Integer'),
+        1 => array($isMain, 'Integer'),
         2 => array($contactSegmentId, 'Integer'));
       CRM_Core_DAO::executeQuery($query, $params);
       $result['values'] = civicrm_api3('ContactSegment', 'Getsingle', array('id' => $contactSegmentId));
