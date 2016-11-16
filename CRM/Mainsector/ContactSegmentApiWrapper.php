@@ -55,7 +55,8 @@ class CRM_Mainsector_ContactSegmentApiWrapper implements API_Wrapper {
       $contactSegmentId = $apiParams['id'];
     }
 
-    $segmentId = CRM_Core_DAO::singleValueQuery("SELECT segment_id FROM `civicrm_contact_segment` WHERE id = %1 ", array(1=>array($contactSegmentId, 'Integer')));
+    $segmentId = CRM_Core_DAO::singleValueQuery("SELECT segment_id FROM `civicrm_contact_segment` WHERE id = %1 ", array(
+      1 => array($contactSegmentId, 'Integer')));
     $segment = civicrm_api3('Segment', 'getsingle', array('id' => $segmentId));
     if (!empty($segment['parent_id'])) {
       $isMain = 0; // Reset is main when segment is an area of expertise.
