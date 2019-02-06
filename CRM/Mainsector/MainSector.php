@@ -59,7 +59,7 @@ class CRM_Mainsector_MainSector {
     if ($formName == "CRM_Contactsegment_Form_ContactSegment") {
       $submitValues = $form->getVar('_submitValues');
       if (isset($submitValues['contact_segment_role']) && isset($submitValues['segment_child'])) {
-        if ($submitValues['contact_segment_role'] == 'Expert' && empty($submitValues['segment_child'])) {
+        if (($submitValues['contact_segment_role'] == 'Expert' || $submitValues['contact_segment_role'] == 'Customer') && empty($submitValues['segment_child'])) {
           if (!isset($submitValues['is_main'])) {
             $submitValues['is_main'] = 0;
           }
@@ -107,7 +107,7 @@ class CRM_Mainsector_MainSector {
   public static function validateForm($form, $fields, $files, $form, &$errors) {
     // error if contact already has another main sector (only for role Expert and Sector)
     if (isset($fields['contact_segment_role']) && isset($fields['segment_child']) && isset($fields['is_main'])) {
-      if ($fields['contact_segment_role'] == 'Expert' && empty($fields['segment_child']) && $fields['is_main'] == 1) {
+      if (($fields['contact_segment_role'] == 'Expert' || $fields['contact_segment_role'] == 'Customer') && empty($fields['segment_child']) && $fields['is_main'] == 1) {
         $query = 'SELECT COUNT(*) AS countMain FROM civicrm_contact_segment
           WHERE is_main = %1 AND contact_id = %2 AND role_value = %3 AND segment_id != %4';
         $params = array(

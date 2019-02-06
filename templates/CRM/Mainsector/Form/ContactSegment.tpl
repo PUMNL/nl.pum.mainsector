@@ -72,7 +72,7 @@
       var parentId = cj("#segment_parent").val();
       var role = cj("#contact_segment_role").val();
 
-      if (parentId && parentId > 0 && role == 'Expert' && childId == 0) {
+      if (parentId && parentId > 0 && (role == 'Expert' || role == 'Customer') && childId == 0) {
         cj('.is-main-section').show();
       } else {
         cj('.is-main-section').hide();
